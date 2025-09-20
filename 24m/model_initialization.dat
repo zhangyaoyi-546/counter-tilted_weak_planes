@@ -1,0 +1,30 @@
+model new
+
+zone import 'H180.f3grid'
+model large-strain OFF
+
+zone cmodel assign elastic  
+zone property young 2200e6 poisson 0.35 density 2100 range group 'block1'  slot 'default' union group 'L1'  slot 'default' 
+zone property young 2000e6 poisson 0.28 density 2200 range group 'block2'  slot 'default' union group 'L2'  slot 'default' 
+zone property young 1500e6 poisson 0.28 density 2200 range group 'block3'  slot 'default' 
+zone property young 750e6  poisson 0.30 density 2160 range group 'block4'  slot 'default' 
+zone property young 500e6  poisson 0.32 density 2030 range group 'block5'  slot 'default' 
+zone property young 300e6  poisson 0.32 density 2030 range group 'block6'  slot 'default' 
+zone property young 300e6  poisson 0.35 density 2030 range group 'block7'  slot 'default' 
+zone property young 250e6  poisson 0.34 density 2030 range group 'jiaceng' slot 'default' 
+
+model gravity 0 0 -10
+
+zone gridpoint fix velocity-x range position-z -0.1 0.1
+zone gridpoint fix velocity-y range position-z -0.1 0.1
+zone gridpoint fix velocity-z range position-z -0.1 0.1
+zone gridpoint fix velocity-x range position-x 999.9 1000.1
+zone gridpoint fix velocity-x range position-x -0.1 0.1
+zone gridpoint fix velocity-y range position-y 0.9 1.1
+zone gridpoint fix velocity-y range position-y -0.1 0.1
+
+model solve 
+
+model save 'first_solve.f3sav'
+
+

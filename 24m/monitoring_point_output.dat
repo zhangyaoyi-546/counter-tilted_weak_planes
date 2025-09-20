@@ -1,0 +1,706 @@
+model restore 'show_plastic_zones.f3sav'
+
+
+;1(745,0,645)
+zone history stress-xz position (745,0,645) 
+zone history stress-xx position (745,0,645) 
+zone history stress-zz position (745,0,645) 
+
+zone history stress quantity shear-maximum position (745,0,645) 
+
+zone history strain-increment-xx position (745,0,645) 
+zone history strain-increment-xz position (745,0,645) 
+zone history strain-increment-zz position (745,0,645) 
+
+zone history strain-increment quantity shear-maximum position (745,0,645) 
+
+zone history displacement-x position (745,0,645) 
+zone history displacement-z position (745,0,645) 
+;2(716,0,471)
+zone history stress-xz position (716,0,471)
+zone history stress-xx position (716,0,471)
+zone history stress-zz position (716,0,471)
+
+zone history stress quantity shear-maximum position (716,0,471)
+
+zone history strain-increment-xx position (716,0,471)
+zone history strain-increment-xz position (716,0,471)
+zone history strain-increment-zz position (716,0,471)
+
+zone history strain-increment quantity shear-maximum position (716,0,471)
+
+zone history displacement-x position (716,0,471)
+zone history displacement-z position (716,0,471)
+;3(707,0,470)
+zone history stress-xz position (707,0,470)
+zone history stress-xx position (707,0,470)
+zone history stress-zz position (707,0,470)
+
+zone history stress quantity shear-maximum position (707,0,470)
+
+zone history strain-increment-xx position (707,0,470)
+zone history strain-increment-xz position (707,0,470)
+zone history strain-increment-zz position (707,0,470)
+
+zone history strain-increment quantity shear-maximum position (707,0,470)
+
+zone history displacement-x position (707,0,470)
+zone history displacement-z position (707,0,470)
+;4(688,0,457)
+zone history stress-xz position (688,0,457)
+zone history stress-xx position (688,0,457)
+zone history stress-zz position (688,0,457)
+
+zone history stress quantity shear-maximum position (688,0,457)
+zone history strain-increment-xx position (688,0,457)
+zone history strain-increment-xz position (688,0,457)
+zone history strain-increment-zz position (688,0,457)
+
+zone history strain-increment quantity shear-maximum position (688,0,457)
+zone history displacement-x position (688,0,457)
+zone history displacement-z position (688,0,457)
+;5(682,0,446)
+zone history stress-xz position (682,0,446)
+zone history stress-xx position (682,0,446)
+zone history stress-zz position (682,0,446) 
+
+zone history stress quantity shear-maximum position (682,0,446)
+
+zone history strain-increment-xx position (682,0,446)
+zone history strain-increment-xz position (682,0,446)
+zone history strain-increment-zz position (682,0,446)
+
+zone history strain-increment quantity shear-maximum position (682,0,446)
+
+zone history displacement-x position (682,0,446)
+zone history displacement-z position (682,0,446)
+;6(678,0,435)
+zone history stress-xz position (678,0,435)
+zone history stress-xx position (678,0,435)
+zone history stress-zz position (678,0,435)
+
+zone history stress quantity shear-maximum position (678,0,435)
+
+zone history strain-increment-xx position (678,0,435)
+zone history strain-increment-xz position (678,0,435)
+zone history strain-increment-zz position (678,0,435)
+
+zone history strain-increment quantity shear-maximum position (678,0,435)
+
+zone history displacement-x position (678,0,435)
+zone history displacement-z position (678,0,435)
+;7(667,0,421)
+zone history stress-xz position (667,0,421)
+zone history stress-xx position (667,0,421)
+zone history stress-zz position (667,0,421)
+
+zone history stress quantity shear-maximum position (667,0,421)
+zone history strain-increment-xx position (667,0,421)
+zone history strain-increment-xz position (667,0,421)
+zone history strain-increment-zz position (667,0,421)
+
+zone history strain-increment quantity shear-maximum position (667,0,421)
+
+zone history displacement-x position (667,0,421)
+zone history displacement-z position (667,0,421)
+;8(659,0,410)
+zone history stress-xz position (659,0,410)
+zone history stress-xx position (659,0,410)
+zone history stress-zz position (659,0,410)
+
+zone history stress quantity shear-maximum position (659,0,410)
+
+zone history strain-increment-xx position (659,0,410)
+zone history strain-increment-xz position (659,0,410)
+zone history strain-increment-zz position (659,0,410)
+
+zone history strain-increment quantity shear-maximum position (659,0,410)
+
+zone history displacement-x position (659,0,410)
+zone history displacement-z position (659,0,410)
+;9(670,0,400)
+zone history stress-xz position (670,0,400)
+zone history stress-xx position (670,0,400)
+zone history stress-zz position (670,0,400)
+
+zone history stress quantity shear-maximum position (670,0,400)
+
+zone history strain-increment-xx position (670,0,400)
+zone history strain-increment-xz position (670,0,400)
+zone history strain-increment-zz position (670,0,400)
+
+zone history strain-increment quantity shear-maximum position (670,0,400)
+
+zone history displacement-x position (670,0,400)
+zone history displacement-z position (670,0,400)
+
+;10(656,0,395)
+zone history stress-xz position (656,0,395)
+zone history stress-xx position (656,0,395)
+zone history stress-zz position (656,0,395)
+
+zone history stress quantity shear-maximum position (656,0,395)
+zone history strain-increment-xx position (656,0,395)
+zone history strain-increment-xz position (656,0,395)
+zone history strain-increment-zz position (656,0,395)
+
+zone history strain-increment quantity shear-maximum position (656,0,395)
+
+zone history displacement-x position (656,0,395)
+zone history displacement-z position (656,0,395)
+;11(646,0,385)
+zone history stress-xz position (646,0,385)
+zone history stress-xx position (646,0,385)
+zone history stress-zz position (646,0,385)
+
+zone history stress quantity shear-maximum position (646,0,385)
+
+zone history strain-increment-xx position (646,0,385)
+zone history strain-increment-xz position (646,0,385)
+zone history strain-increment-zz position (646,0,385)
+
+zone history strain-increment quantity shear-maximum position (646,0,385)
+
+zone history displacement-x position (646,0,385)
+zone history displacement-z position (646,0,385)
+;12(643,0,373)
+zone history stress-xz position (643,0,373)
+zone history stress-xx position (643,0,373)
+zone history stress-zz position (643,0,373)
+
+zone history stress quantity shear-maximum position (643,0,373)
+
+zone history strain-increment-xx position (643,0,373)
+zone history strain-increment-xz position (643,0,373)
+zone history strain-increment-zz position (643,0,373)
+
+zone history strain-increment quantity shear-maximum position (643,0,373)
+
+zone history displacement-x position (643,0,373)
+zone history displacement-z position (643,0,373)
+;13(637,0,361)
+zone history stress-xz position (637,0,361)
+zone history stress-xx position (637,0,361)
+zone history stress-zz position (637,0,361)
+
+zone history stress quantity shear-maximum position (637,0,361)
+
+zone history strain-increment-xx position (637,0,361)
+zone history strain-increment-xz position (637,0,361)
+zone history strain-increment-zz position (637,0,361)
+
+zone history strain-increment quantity shear-maximum position (637,0,361)
+
+zone history displacement-x position (637,0,361)
+zone history displacement-z position (637,0,361)
+;14(629,0,354)
+zone history stress-xz position (629,0,354)
+zone history stress-xx position (629,0,354)
+zone history stress-zz position (629,0,354)
+
+zone history stress quantity shear-maximum position (629,0,354)
+
+zone history strain-increment-xx position (629,0,354)
+zone history strain-increment-xz position (629,0,354)
+zone history strain-increment-zz position (629,0,354)
+
+zone history strain-increment quantity shear-maximum position (629,0,354)
+
+zone history displacement-x position (629,0,354)
+zone history displacement-z position (629,0,354)
+;15(612,0,384)
+zone history stress-xz position (612,0,384)
+zone history stress-xx position (612,0,384)
+zone history stress-zz position (612,0,384)
+zone history stress quantity shear-maximum position (612,0,384)
+
+zone history strain-increment-xx position (612,0,384)
+zone history strain-increment-xz position (612,0,384)
+zone history strain-increment-zz position (612,0,384)
+
+zone history strain-increment quantity shear-maximum position (612,0,384)
+
+zone history displacement-x position (612,0,384)
+zone history displacement-z position (612,0,384)
+;16(607,0,342)
+zone history stress-xz position (607,0,342)
+zone history stress-xx position (607,0,342)
+zone history stress-zz position (607,0,342)
+
+zone history stress quantity shear-maximum position (607,0,342)
+
+zone history strain-increment-xx position (607,0,342)
+zone history strain-increment-xz position (607,0,342)
+zone history strain-increment-zz position (607,0,342)
+
+zone history strain-increment quantity shear-maximum position (607,0,342)
+
+zone history displacement-x position (607,0,342)
+zone history displacement-z position (607,0,342)
+;17(587,0,341)
+zone history stress-xz position (587,0,341)
+zone history stress-xx position (587,0,341)
+zone history stress-zz position (587,0,341)
+
+zone history stress quantity shear-maximum position (587,0,341)
+
+zone history strain-increment-xx position (587,0,341)
+zone history strain-increment-xz position (587,0,341)
+zone history strain-increment-zz position (587,0,341)
+
+zone history strain-increment quantity shear-maximum position (587,0,341)
+
+zone history displacement-x position (587,0,341)
+zone history displacement-z position (587,0,341)
+;18(582,0,326)
+zone history stress-xz position (582,0,326)
+zone history stress-xx position (582,0,326)
+zone history stress-zz position (582,0,326)
+
+zone history stress quantity shear-maximum position (582,0,326)
+
+zone history strain-increment-xx position (582,0,326)
+zone history strain-increment-xz position (582,0,326)
+zone history strain-increment-zz position (582,0,326)
+
+zone history strain-increment quantity shear-maximum position (582,0,326)
+
+zone history displacement-x position (582,0,326)
+zone history displacement-z position (582,0,326)
+;19(571,0,382)
+zone history stress-xz position (571,0,382)
+zone history stress-xx position (571,0,382)
+zone history stress-zz position (571,0,382)
+
+zone history stress quantity shear-maximum position (571,0,382)
+
+zone history strain-increment-xx position (571,0,382)
+zone history strain-increment-xz position (571,0,382)
+zone history strain-increment-zz position (571,0,382)
+
+zone history strain-increment quantity shear-maximum position (571,0,382)
+
+zone history displacement-x position (571,0,382)
+zone history displacement-z position (571,0,382)
+;20(559,0,295)
+zone history stress-xz position (559,0,295)
+zone history stress-xx position (559,0,295)
+zone history stress-zz position (559,0,295)
+
+zone history stress quantity shear-maximum position (559,0,295)
+
+zone history strain-increment-xx position (559,0,295)
+zone history strain-increment-xz position (559,0,295)
+zone history strain-increment-zz position (559,0,295)
+
+zone history strain-increment quantity shear-maximum position (559,0,295)
+
+zone history displacement-x position (559,0,295)
+zone history displacement-z position (559,0,295)
+;21(541,0,280)
+zone history stress-xz position (541,0,280)
+zone history stress-xx position (541,0,280)
+zone history stress-zz position (541,0,280)
+
+zone history stress quantity shear-maximum position (541,0,280)
+
+zone history strain-increment-xx position (541,0,280)
+zone history strain-increment-xz position (541,0,280)
+zone history strain-increment-zz position (541,0,280)
+
+zone history strain-increment quantity shear-maximum position (541,0,280)
+
+zone history displacement-x position (541,0,280)
+zone history displacement-z position (541,0,280)
+;22(520,0,269)
+zone history stress-xz position (520,0,269)
+zone history stress-xx position (520,0,269)
+zone history stress-zz position (520,0,269)
+
+zone history stress quantity shear-maximum position (520,0,269)
+
+zone history strain-increment-xx position (520,0,269)
+zone history strain-increment-xz position (520,0,269)
+zone history strain-increment-zz position (520,0,269)
+
+zone history strain-increment quantity shear-maximum position (520,0,269)
+
+zone history displacement-x position (520,0,269)
+zone history displacement-z position (520,0,269)
+;23(501,0,262)
+zone history stress-xz position (501,0,262)
+zone history stress-xx position (501,0,262)
+zone history stress-zz position (501,0,262)
+
+zone history stress quantity shear-maximum position (501,0,262)
+
+zone history strain-increment-xx position (501,0,262)
+zone history strain-increment-xz position (501,0,262)
+zone history strain-increment-zz position (501,0,262)
+
+zone history strain-increment quantity shear-maximum position (501,0,262)
+
+zone history displacement-x position (501,0,262)
+zone history displacement-z position (501,0,262)
+;24(482,0,247)
+zone history stress-xz position (482,0,247)
+zone history stress-xx position (482,0,247)
+zone history stress-zz position (482,0,247)
+
+zone history stress quantity shear-maximum position (482,0,247)
+
+zone history strain-increment-xx position (482,0,247)
+zone history strain-increment-xz position (482,0,247)
+zone history strain-increment-zz position (482,0,247)
+
+zone history strain-increment quantity shear-maximum position (482,0,247)
+
+zone history displacement-x position (482,0,247)
+zone history displacement-z position (482,0,247)
+;25(467,0,240)
+zone history stress-xz position (467,0,240)
+zone history stress-xx position (467,0,240)
+zone history stress-zz position (467,0,240)
+
+zone history stress quantity shear-maximum position (467,0,240)
+
+zone history strain-increment-xx position (467,0,240)
+zone history strain-increment-xz position (467,0,240)
+zone history strain-increment-zz position (467,0,240)
+
+zone history strain-increment quantity shear-maximum position (467,0,240)
+
+zone history displacement-x position (467,0,240)
+zone history displacement-z position (467,0,240)
+;26(438,0,245)
+zone history stress-xz position (438,0,245)
+zone history stress-xx position (438,0,245)
+zone history stress-zz position (438,0,245)
+
+zone history stress quantity shear-maximum position (438,0,245)
+
+zone history strain-increment-xx position (438,0,245)
+zone history strain-increment-xz position (438,0,245)
+zone history strain-increment-zz position (438,0,245)
+
+zone history strain-increment quantity shear-maximum position (438,0,245)
+
+zone history displacement-x position (438,0,245)
+zone history displacement-z position (438,0,245)
+;27(410,0,238)
+zone history stress-xz position (410,0,238)
+zone history stress-xx position (410,0,238)
+zone history stress-zz position (410,0,238)
+
+zone history stress quantity shear-maximum position (410,0,238)
+
+zone history strain-increment-xx position (410,0,238)
+zone history strain-increment-xz position (410,0,238)
+zone history strain-increment-zz position (410,0,238)
+
+zone history strain-increment quantity shear-maximum position (410,0,238)
+
+zone history displacement-x position (410,0,238)
+zone history displacement-z position (410,0,238)
+;28(373,0,228)
+zone history stress-xz position (373,0,228)
+zone history stress-xx position (373,0,228)
+zone history stress-zz position (373,0,228)
+
+zone history stress quantity shear-maximum position (373,0,228)
+
+zone history strain-increment-xx position (373,0,228)
+zone history strain-increment-xz position (373,0,228)
+zone history strain-increment-zz position (373,0,228)
+
+zone history strain-increment quantity shear-maximum position (373,0,228)
+
+zone history displacement-x position (373,0,228)
+zone history displacement-z position (373,0,228)
+;29(348,0,222)
+zone history stress-xz position (348,0,222)
+zone history stress-xx position (348,0,222)
+zone history stress-zz position (348,0,222)
+
+zone history stress quantity shear-maximum position (348,0,222)
+
+zone history strain-increment-xx position (348,0,222)
+zone history strain-increment-xz position (348,0,222)
+zone history strain-increment-zz position (348,0,222)
+
+zone history strain-increment quantity shear-maximum position (348,0,222)
+
+zone history displacement-x position (348,0,222)
+zone history displacement-z position (348,0,222)
+;30(312,0,218)
+zone history stress-xz position (312,0,218)
+zone history stress-xx position (312,0,218)
+zone history stress-zz position (312,0,218)
+
+zone history stress quantity shear-maximum position (312,0,218)
+
+zone history strain-increment-xx position (312,0,218)
+zone history strain-increment-xz position (312,0,218)
+zone history strain-increment-zz position (312,0,218)
+
+zone history strain-increment quantity shear-maximum position (312,0,218)
+
+zone history displacement-x position (312,0,218)
+zone history displacement-z position (312,0,218)
+;31(401,0,384)
+zone history stress-xz position (401,0,384)
+zone history stress-xx position (401,0,384)
+zone history stress-zz position (401,0,384)
+
+zone history stress quantity shear-maximum position (401,0,384)
+
+zone history strain-increment-xx position (401,0,384)
+zone history strain-increment-xz position (401,0,384)
+zone history strain-increment-zz position (401,0,384)
+
+zone history strain-increment quantity shear-maximum position (401,0,384)
+
+zone history displacement-x position (401,0,384)
+zone history displacement-z position (401,0,384)
+;32(395,0,351)
+zone history stress-xz position (395,0,351)
+zone history stress-xx position (395,0,351)
+zone history stress-zz position (395,0,351)
+
+zone history stress quantity shear-maximum position (395,0,351)
+
+zone history strain-increment-xx position (395,0,351)
+zone history strain-increment-xz position (395,0,351)
+zone history strain-increment-zz position (395,0,351)
+
+zone history strain-increment quantity shear-maximum position (395,0,351)
+
+zone history displacement-x position (395,0,351)
+zone history displacement-z position (395,0,351)
+;33(523,0,381)
+zone history stress-xz position (523,0,381)
+zone history stress-xx position (523,0,381)
+zone history stress-zz position (523,0,381)
+
+zone history stress quantity shear-maximum position (523,0,381)
+
+zone history strain-increment-xx position (523,0,381)
+zone history strain-increment-xz position (523,0,381)
+zone history strain-increment-zz position (523,0,381)
+
+zone history strain-increment quantity shear-maximum position (523,0,381)
+
+zone history displacement-x position (523,0,381)
+zone history displacement-z position (523,0,381)
+;34(514,0,341)
+zone history stress-xz position (514,0,341)
+zone history stress-xx position (514,0,341)
+zone history stress-zz position (514,0,341)
+
+zone history stress quantity shear-maximum position (514,0,341)
+
+zone history strain-increment-xx position (514,0,341)
+zone history strain-increment-xz position (514,0,341)
+zone history strain-increment-zz position (514,0,341)
+
+zone history strain-increment quantity shear-maximum position (514,0,341)
+
+zone history displacement-x position (514,0,341)
+zone history displacement-z position (514,0,341)
+;35(648,0,375)
+zone history stress-xz position (648,0,375)
+zone history stress-xx position (648,0,375)
+zone history stress-zz position (648,0,375)
+
+zone history stress quantity shear-maximum position (648,0,375)
+
+zone history strain-increment-xx position (648,0,375)
+zone history strain-increment-xz position (648,0,375)
+zone history strain-increment-zz position (648,0,375)
+
+zone history strain-increment quantity shear-maximum position (648,0,375)
+
+zone history displacement-x position (648,0,375)
+zone history displacement-z position (648,0,375)
+;36(637,0,341)
+zone history stress-xz position (637,0,341)
+zone history stress-xx position (637,0,341)
+zone history stress-zz position (637,0,341)
+
+zone history stress quantity shear-maximum position (637,0,341)
+
+zone history strain-increment-xx position (637,0,341)
+zone history strain-increment-xz position (637,0,341)
+zone history strain-increment-zz position (637,0,341)
+
+zone history strain-increment quantity shear-maximum position (637,0,341)
+
+zone history displacement-x position (637,0,341)
+zone history displacement-z position (637,0,341)
+;37(767,0,370)
+zone history stress-xz position (767,0,370)
+zone history stress-xx position (767,0,370)
+zone history stress-zz position (767,0,370)
+
+zone history stress quantity shear-maximum position (767,0,370)
+
+zone history strain-increment-xx position (767,0,370)
+zone history strain-increment-xz position (767,0,370)
+zone history strain-increment-zz position (767,0,370)
+
+zone history strain-increment quantity shear-maximum position (767,0,370)
+
+zone history displacement-x position (767,0,370)
+zone history displacement-z position (767,0,370)
+;38(762,0,339)
+zone history stress-xz position (762,0,339)
+zone history stress-xx position (762,0,339)
+zone history stress-zz position (762,0,339)
+
+zone history stress quantity shear-maximum position (762,0,339)
+
+zone history strain-increment-xx position (762,0,339)
+zone history strain-increment-xz position (762,0,339)
+zone history strain-increment-zz position (762,0,339)
+
+zone history strain-increment quantity shear-maximum position (762,0,339)
+
+zone history displacement-x position (762,0,339)
+zone history displacement-z position (762,0,339)
+;39(924,0,359)
+zone history stress-xz position (924,0,359)
+zone history stress-xx position (924,0,359)
+zone history stress-zz position (924,0,359)
+
+zone history stress quantity shear-maximum position (924,0,359)
+
+zone history strain-increment-xx position (924,0,359)
+zone history strain-increment-xz position (924,0,359)
+zone history strain-increment-zz position (924,0,359)
+
+zone history strain-increment quantity shear-maximum position (924,0,359)
+
+zone history displacement-x position (924,0,359)
+zone history displacement-z position (924,0,359)
+;40(923,0,326)
+zone history stress-xz position (923,0,326)
+zone history stress-xx position (923,0,326)
+zone history stress-zz position (923,0,326)
+
+zone history stress quantity shear-maximum position (923,0,326)
+
+zone history strain-increment-xx position (923,0,326)
+zone history strain-increment-xz position (923,0,326)
+zone history strain-increment-zz position (923,0,326)
+
+zone history strain-increment quantity shear-maximum position (923,0,326)
+
+zone history displacement-x position (923,0,326)
+zone history displacement-z position (923,0,326)
+;41(400,0,370)
+zone history stress-xz position (400,0,370)
+zone history stress-xx position (400,0,370)
+zone history stress-zz position (400,0,370)
+
+zone history stress quantity shear-maximum position (400,0,370)
+
+zone history strain-increment-xx position (400,0,370)
+zone history strain-increment-xz position (400,0,370)
+zone history strain-increment-zz position (400,0,370)
+
+zone history strain-increment quantity shear-maximum position (400,0,370)
+
+zone history displacement-x position (400,0,370)
+zone history displacement-z position (400,0,370)
+;42(524,0,366)
+zone history stress-xz position (524,0,366)
+zone history stress-xx position (524,0,366)
+zone history stress-zz position (524,0,366)
+
+zone history stress quantity shear-maximum position (524,0,366)
+
+zone history strain-increment-xx position (524,0,366)
+zone history strain-increment-xz position (524,0,366)
+zone history strain-increment-zz position (524,0,366)
+
+zone history strain-increment quantity shear-maximum position (524,0,366)
+
+zone history displacement-x position (524,0,366)
+zone history displacement-z position (524,0,366)
+;43(654,0,361)
+zone history stress-xz position (654,0,361)
+zone history stress-xx position (654,0,361)
+zone history stress-zz position (654,0,361)
+
+zone history stress quantity shear-maximum position (654,0,361)
+
+zone history strain-increment-xx position (654,0,361)
+zone history strain-increment-xz position (654,0,361)
+zone history strain-increment-zz position (654,0,361)
+
+zone history strain-increment quantity shear-maximum position (654,0,361)
+
+zone history displacement-x position (654,0,361)
+zone history displacement-z position (654,0,361)
+;44(788,0,351)
+zone history stress-xz position (788,0,351)
+zone history stress-xx position (788,0,351)
+zone history stress-zz position (788,0,351)
+
+zone history stress quantity shear-maximum position (788,0,351)
+
+zone history strain-increment-xx position (788,0,351)
+zone history strain-increment-xz position (788,0,351)
+zone history strain-increment-zz position (788,0,351)
+
+zone history strain-increment quantity shear-maximum position (788,0,351)
+
+zone history displacement-x position (788,0,351)
+zone history displacement-z position (788,0,351)
+;45(925,0,343)
+zone history stress-xz position (925,0,343)
+zone history stress-xx position (925,0,343)
+zone history stress-zz position (925,0,343)
+
+zone history stress quantity shear-maximum position (925,0,343)
+
+zone history strain-increment-xx position (925,0,343)
+zone history strain-increment-xz position (925,0,343)
+zone history strain-increment-zz position (925,0,343)
+
+zone history strain-increment quantity shear-maximum position (925,0,343)
+
+zone history displacement-x position (925,0,343)
+zone history displacement-z position (925,0,343)
+;46(281,0,210)
+zone history stress-xz position (281,0,210)
+zone history stress-xx position (281,0,210)
+zone history stress-zz position (281,0,210)
+
+zone history stress quantity shear-maximum position (281,0,210)
+
+zone history strain-increment-xx position (281,0,210)
+zone history strain-increment-xz position (281,0,210)
+zone history strain-increment-zz position (281,0,210)
+
+zone history strain-increment quantity shear-maximum position (281,0,210)
+
+zone history displacement-x position (281,0,210)
+zone history displacement-z position (281,0,210)
+;9_1(665,0,400)
+zone history stress-xz position (665,0,400)
+zone history stress-xx position (665,0,400)
+zone history stress-zz position (665,0,400)
+
+zone history stress quantity shear-maximum position (665,0,400)
+
+zone history strain-increment-xx position (665,0,400)
+zone history strain-increment-xz position (665,0,400)
+zone history strain-increment-zz position (665,0,400)
+
+zone history strain-increment quantity shear-maximum position (665,0,400)
+
+zone history displacement-x position (665,0,400)
+zone history displacement-z position (665,0,400)
+
+model save 'monitoring_point_output.f3sav'
