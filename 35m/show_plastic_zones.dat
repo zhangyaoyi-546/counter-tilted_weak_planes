@@ -1,0 +1,147 @@
+model restore 'material_assignment.f3sav'
+
+
+program echo off
+Fish define ShowPlasticZones
+  Whilestepping
+  loop foreach local zp zone.list()
+         if zone.state(zp,true) = 1
+           zone.group(zp,"plastic") = "Shear-now" 
+	else if zone.state(zp,true) = 2
+	       zone.group(zp,"plastic") = "Tension-now" 
+	else if zone.state(zp,true) = 4
+	       zone.group(zp,"plastic") = "Shear-past" 
+	else if zone.state(zp,true) = 8
+	       zone.group(zp,"plastic") = "Tension-past" 
+		   
+	else if zone.state(zp,true) = 3
+	       zone.group(zp,"plastic") = "Shear-now Tension-now"	
+	else if zone.state(zp,true) = 5
+	       zone.group(zp,"plastic") = "Shear-now Shear-past" 
+	else if zone.state(zp,true) = 9
+	       zone.group(zp,"plastic") = "Shear-now Tension-past" 
+	else if zone.state(zp,true) = 6
+	       zone.group(zp,"plastic") = "Tension-now Shear-past" 
+	else if zone.state(zp,true) = 10
+	       zone.group(zp,"plastic") = "Tension-now Tension-past" 
+	else if zone.state(zp,true) = 12
+	       zone.group(zp,"plastic") = "Shear-past Tension-past" 
+
+	else if zone.state(zp,true) = 14
+	       zone.group(zp,"plastic") = "Tension-now Shear-past Tension-past" 
+	else if zone.state(zp,true) = 13
+	       zone.group(zp,"plastic") = "Shear-now Shear-past Tension-past"	
+	else if zone.state(zp,true) = 11
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Tension-past" 
+	else if zone.state(zp,true) = 7
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Shear-past" 
+
+	else if zone.state(zp,true) = 15
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Shear-past Tension-past"	   
+		   
+	else
+	       zone.group(zp,"plastic") = "Other"
+	endif
+  endloop
+end
+program echo on
+
+zone mechanical energy active on ;打开能量计算开关
+
+program echo off
+
+Fish define Plastic_vol
+  local Plastic_v = 0       
+    loop foreach local zo zone.list()
+	  zone.extra(zo,1) = zone.work.plastic.vol(zo)
+      Plastic_v   = Plastic_v  + zone.work.plastic.vol(zo)
+    endloop
+  Plastic_vol = Plastic_v
+end  
+Fish history @Plastic_vol
+
+Fish define Plastic_shear 
+  local Plastic_s = 0            
+    loop foreach local zo zone.list()
+	  zone.extra(zo,2) = zone.work.plastic.shear(zo)
+      Plastic_s = Plastic_s+zone.work.plastic.shear(zo)
+    endloop
+  Plastic_shear = Plastic_s
+end  
+Fish history @Plastic_shear
+
+Fish define Plastic_total
+  local Plastic_t = 0              
+    loop foreach local zo zone.list()
+      zone.extra(zo,3) = zone.work.plastic.total(zo)	
+	  Plastic_t = Plastic_t+zone.work.plastic.total(zo)
+    endloop
+  Plastic_total = Plastic_t
+end  
+Fish history @Plastic_total
+
+Fish define Elastic_vol
+  local Elastic_v = 0             
+    loop foreach local zo zone.list()
+      zone.extra(zo,4) = zone.work.elastic.vol(zo)	
+	  Elastic_v   = Elastic_v +zone.work.elastic.vol(zo)
+    endloop
+  Elastic_vol= Elastic_v
+end	
+Fish history @Elastic_vol
+
+Fish define Elastic_shear
+  local Elastic_s = 0 
+    loop foreach local zo zone.list()
+      zone.extra(zo,5) = zone.work.elastic.shear(zo)	
+	  Elastic_s = Elastic_s+zone.work.elastic.shear(zo)
+	endloop
+  Elastic_shear= Elastic_s
+end	
+Fish history @Elastic_shear
+
+Fish define Elastic_total
+  local Elastic_t = 0 
+    loop foreach local zo zone.list()
+      zone.extra(zo,6) = zone.work.elastic.total(zo)	
+	  Elastic_t =Elastic_t + zone.work.elastic.total(zo)
+	endloop
+  Elastic_total= Elastic_t
+end
+Fish history @Elastic_total
+program echo on
+program echo off
+
+fish define Elastic_t
+
+  Elastic_s = 0    
+  Elastic_v = 0    
+  
+  p_z=zone.head
+    
+    loop while p_z#null 
+    
+      if zone.isgroup(p_z,'GH') = 1 then 
+        
+
+      zone.extra(p_z,1) = zone.work.plastic.shear(p_z)	
+	  Elastic_s = Elastic_s + zone.extra(p_z,1)
+      
+      zone.extra(p_z,2) = zone.work.elastic.vol(p_z)	
+	  Elastic_v =Elastic_v + zone.extra(p_z,2)
+    
+      endif
+     
+    p_z=zone.next(p_z) 
+     
+   endloop
+
+end	
+
+fish callback add @Elastic_t 1
+
+fish history name 's' @Elastic_s
+fish history name 'v' @Elastic_v
+
+program echo on
+model save 'show_plastic_zones.f3sav'
