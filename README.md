@@ -1,7 +1,7 @@
 # What is this repository for?
 This code is from our paper "The unlocked mechanism and instability prediction of locked-segment-type slopes containing counter-tilted weak planes of different thicknesses".
 # Who do I talk to?
-Baicun Yang; a. School of Resources and Civil Engineering, Northeastern University, Shenyang, Liaoning 110819, China; b. State Key Laboratory of Intelligent Deep Metal Mining and Equipment, Shenyang, Liaoning 110819, China
+Baicun Yang; a. School of Resources and Civil Engineering, Northeastern University, Shenyang, Liaoning 110819, China; b. State Key Laboratory of Intelligent Deep Metal Mining and Equipment, Shenyang, Liaoning 110819, China  
 E-mail: yangbaicun@mail.neu.edu.cn
 # Usage
 Open the file with the `.prj` extension and run the following codes in sequence:  
