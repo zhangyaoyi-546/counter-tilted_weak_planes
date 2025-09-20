@@ -1,0 +1,1819 @@
+model restore 'first_solve.f3sav'
+
+zone gridpoint initialize displacement-x 0
+zone gridpoint initialize displacement-y 0
+zone gridpoint initialize displacement-z 0
+zone gridpoint initialize velocity-x 0
+zone gridpoint initialize velocity-y 0
+zone gridpoint initialize velocity-z 0
+zone initialize-stresses
+
+zone group 'fq1' slot 'default' range position-x 390 463 position-z 365 389 
+zone group 'fq2' slot 'default' range position-x 463 530 position-z 362 386
+zone group 'fq3' slot 'default' range position-x 530 596 position-z 359 383 
+zone group 'fq4' slot 'default' range position-x 596 663 position-z 356 380  
+zone group 'fq5' slot 'default' range position-x 664 730 position-z 354 378  
+zone group 'fq6' slot 'default' range position-x 731 797 position-z 350 374  
+zone group 'fq8' slot 'default' range position-x 798 860 position-z 347 371 
+zone group 'fq9' slot 'default' range position-x 860 931 position-z 342 366
+zone group 'fq10' slot 'default' range position-x 932 1000 position-z 336 360
+
+zone group 'fanqing' range group 'fq1'  slot 'default' union group 'fq2'  slot 'default' ...
+     union group 'fq3'  slot 'default' union group 'fq4'  slot 'default' union group 'fq5'  slot 'default' ...
+     union group 'fq6'  slot 'default' union group 'fq7'  slot 'default' union group 'fq8'  slot 'default' ...
+     union group 'fq9'  slot 'default' union group 'fq10' slot 'default' 
+
+zone cmodel assign null range group 'L1'  slot 'default' union group 'L2' slot 'default' 
+zone cmodel assign mohr-coulomb range group 'block1'  slot 'default' union group 'block2' slot 'default'  ...
+     union group 'block3' slot 'default'  union group 'block4' slot 'default'  ...
+     union group 'block5' slot 'default'  union group 'block6' slot 'default'  ...
+     union group 'block7' slot 'default'  union group 'jiaceng' slot 'default' ...
+     union group 'fanqing' slot 'default' 
+
+zone property young 2200e6 poisson 0.35 density 2100 cohesion 1415e3 friction 33 tension 526e3 range group 'block1'  slot 'default' 
+zone property young 2000e6 poisson 0.28 density 2200 cohesion 1179e3 friction 33 tension 438e3 range group 'block2'  slot 'default' 
+zone property young 1500e6 poisson 0.28 density 2200 cohesion 943e3  friction 33 tension 350e3 range group 'block3'  slot 'default' 
+zone property young 750e6  poisson 0.30 density 2160 cohesion 235e3  friction 29 tension 81e3  range group 'block4'  slot 'default' 
+zone property young 500e6  poisson 0.32 density 2030 cohesion 235e3  friction 29 tension 81e3  range group 'block5'  slot 'default' 
+zone property young 300e6  poisson 0.32 density 2030 cohesion 235e3  friction 31 tension 84e3  range group 'block6'  slot 'default' 
+zone property young 300e6  poisson 0.35 density 2030 cohesion 235e3  friction 31 tension 84e3  range group 'block7'  slot 'default' 
+zone property young 300e6  poisson 0.32 density 1800 cohesion 23e3   friction 27 tension 7.7e3 range group 'jiaceng' slot 'default' 
+zone property young 250e6  poisson 0.30 density 1800 cohesion 94e3   friction 22 tension 35e3  range group 'fanqing' slot 'default' 
+
+zone list gridpoint
+
+zone group 'G0' slot '1' range position-x 550 570 position-z  305 330 
+zone group 'G1' slot '1' range position-x 570 600 position-z  325 350 
+zone group 'G2' slot '1' range position-x 600 620 position-z  335 360 
+zone group 'G3' slot '1' range position-x 620 640 position-z  345 365 
+zone group 'G4' slot '1' range position-x 635 655 position-z  355 380 
+zone group 'G5' slot '1' range position-x 645 675 position-z  375 400 
+zone group 'G6' slot '1' range position-x 665 685 position-z  395 415 
+zone group 'G7' slot '1' range position-x 675 700 position-z  415 440  
+zone group 'G8' slot '1' range position-x 695 715 position-z  435 474
+zone group 'GH' range group 'G0'  slot '1' union group 'G1' slot '1' union group 'G2' slot '1' union group 'G3' slot '1'  union group 'G4' slot '1'  ...
+        union group 'G5' slot '1'  union group 'G6' slot '1' union group 'G7' slot '1' union group 'G8' slot '1'
+ 
+
+program echo off
+
+Fish define ShowPlasticZones
+  Whilestepping
+  loop foreach local zp zone.list()
+         if zone.state(zp,true) = 1
+           zone.group(zp,"plastic") = "Shear-now" 
+	else if zone.state(zp,true) = 2
+	       zone.group(zp,"plastic") = "Tension-now" 
+	else if zone.state(zp,true) = 4
+	       zone.group(zp,"plastic") = "Shear-past" 
+	else if zone.state(zp,true) = 8
+	       zone.group(zp,"plastic") = "Tension-past" 
+		   
+	else if zone.state(zp,true) = 3
+	       zone.group(zp,"plastic") = "Shear-now Tension-now"	
+	else if zone.state(zp,true) = 5
+	       zone.group(zp,"plastic") = "Shear-now Shear-past" 
+	else if zone.state(zp,true) = 9
+	       zone.group(zp,"plastic") = "Shear-now Tension-past" 
+	else if zone.state(zp,true) = 6
+	       zone.group(zp,"plastic") = "Tension-now Shear-past" 
+	else if zone.state(zp,true) = 10
+	       zone.group(zp,"plastic") = "Tension-now Tension-past" 
+	else if zone.state(zp,true) = 12
+	       zone.group(zp,"plastic") = "Shear-past Tension-past" 
+
+	else if zone.state(zp,true) = 14
+	       zone.group(zp,"plastic") = "Tension-now Shear-past Tension-past" 
+	else if zone.state(zp,true) = 13
+	       zone.group(zp,"plastic") = "Shear-now Shear-past Tension-past"	
+	else if zone.state(zp,true) = 11
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Tension-past" 
+	else if zone.state(zp,true) = 7
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Shear-past" 
+
+	else if zone.state(zp,true) = 15
+	       zone.group(zp,"plastic") = "Shear-now Tension-now Shear-past Tension-past"	   
+		   
+	else
+	       zone.group(zp,"plastic") = "Other"
+	endif
+  endloop
+end
+program echo on
+
+;history interval 500
+ 
+fish history name '2' @n
+fish history name '3' @n5
+fish history name '4' @n10
+fish history name '5' @n13
+fish history name '6' @n14
+
+zone mechanical energy active on
+
+program echo off
+
+Fish define Plastic_vol
+  local Plastic_v = 0       
+    loop foreach local zo zone.list()
+	  zone.extra(zo,1) = zone.work.plastic.vol(zo)
+      Plastic_v   = Plastic_v  + zone.work.plastic.vol(zo)
+    endloop
+  Plastic_vol = Plastic_v
+end  
+Fish history @Plastic_vol
+
+Fish define Plastic_shear 
+  local Plastic_s = 0            
+    loop foreach local zo zone.list()
+	  zone.extra(zo,2) = zone.work.plastic.shear(zo)
+      Plastic_s = Plastic_s+zone.work.plastic.shear(zo)
+    endloop
+  Plastic_shear = Plastic_s
+end  
+Fish history @Plastic_shear
+
+Fish define Plastic_total
+  local Plastic_t = 0              
+    loop foreach local zo zone.list()
+      zone.extra(zo,3) = zone.work.plastic.total(zo)	
+	  Plastic_t = Plastic_t+zone.work.plastic.total(zo)
+    endloop
+  Plastic_total = Plastic_t
+end  
+Fish history @Plastic_total
+
+Fish define Elastic_vol
+  local Elastic_v = 0             
+    loop foreach local zo zone.list()
+      zone.extra(zo,4) = zone.work.elastic.vol(zo)	
+	  Elastic_v   = Elastic_v +zone.work.elastic.vol(zo)
+    endloop
+  Elastic_vol= Elastic_v
+end	
+Fish history @Elastic_vol
+
+Fish define Elastic_shear
+  local Elastic_s = 0 
+    loop foreach local zo zone.list()
+      zone.extra(zo,5) = zone.work.elastic.shear(zo)	
+	  Elastic_s = Elastic_s+zone.work.elastic.shear(zo)
+	endloop
+  Elastic_shear= Elastic_s
+end	
+Fish history @Elastic_shear
+
+Fish define Elastic_total
+  local Elastic_t = 0 
+    loop foreach local zo zone.list()
+      zone.extra(zo,6) = zone.work.elastic.total(zo)	
+	  Elastic_t =Elastic_t + zone.work.elastic.total(zo)
+	endloop
+  Elastic_total= Elastic_t
+end
+Fish history @Elastic_total
+program echo on
+program echo off
+
+fish define Elastic_t
+
+  Elastic_s = 0    
+  Elastic_v = 0    
+  p_z=zone.head
+    
+    loop while p_z#null 
+      if zone.isgroup(p_z,'GH') = 1 then 
+      zone.extra(p_z,1) = zone.work.plastic.shear(p_z)	
+	  Elastic_s = Elastic_s + zone.extra(p_z,1)
+      zone.extra(p_z,2) = zone.work.elastic.vol(p_z)	
+	  Elastic_v =Elastic_v + zone.extra(p_z,2)
+      endif
+    p_z=zone.next(p_z) 
+   endloop
+end	
+
+fish callback add @Elastic_t 1
+fish history name 's' @Elastic_s
+fish history name 'v' @Elastic_v
+
+program echo on
+
+
+;1(745,0,645)
+zone history stress-xz position (745,0,645) 
+zone history stress-xx position (745,0,645) 
+zone history stress-zz position (745,0,645) 
+
+zone history stress quantity shear-maximum position (745,0,645) 
+
+zone history strain-increment-xx position (745,0,645) 
+zone history strain-increment-xz position (745,0,645) 
+zone history strain-increment-zz position (745,0,645) 
+
+zone history strain-increment quantity shear-maximum position (745,0,645) 
+
+zone history displacement-x position (745,0,645) 
+zone history displacement-z position (745,0,645) 
+;2(716,0,471)
+zone history stress-xz position (716,0,471)
+zone history stress-xx position (716,0,471)
+zone history stress-zz position (716,0,471)
+
+zone history stress quantity shear-maximum position (716,0,471)
+
+zone history strain-increment-xx position (716,0,471)
+zone history strain-increment-xz position (716,0,471)
+zone history strain-increment-zz position (716,0,471)
+
+zone history strain-increment quantity shear-maximum position (716,0,471)
+
+zone history displacement-x position (716,0,471)
+zone history displacement-z position (716,0,471)
+;3(707,0,470)
+zone history stress-xz position (707,0,470)
+zone history stress-xx position (707,0,470)
+zone history stress-zz position (707,0,470)
+
+zone history stress quantity shear-maximum position (707,0,470)
+
+zone history strain-increment-xx position (707,0,470)
+zone history strain-increment-xz position (707,0,470)
+zone history strain-increment-zz position (707,0,470)
+
+zone history strain-increment quantity shear-maximum position (707,0,470)
+
+zone history displacement-x position (707,0,470)
+zone history displacement-z position (707,0,470)
+;4(688,0,457)
+zone history stress-xz position (688,0,457)
+zone history stress-xx position (688,0,457)
+zone history stress-zz position (688,0,457)
+
+zone history stress quantity shear-maximum position (688,0,457)
+zone history strain-increment-xx position (688,0,457)
+zone history strain-increment-xz position (688,0,457)
+zone history strain-increment-zz position (688,0,457)
+
+zone history strain-increment quantity shear-maximum position (688,0,457)
+zone history displacement-x position (688,0,457)
+zone history displacement-z position (688,0,457)
+;5(682,0,446)
+zone history stress-xz position (682,0,446)
+zone history stress-xx position (682,0,446)
+zone history stress-zz position (682,0,446) 
+
+zone history stress quantity shear-maximum position (682,0,446)
+
+zone history strain-increment-xx position (682,0,446)
+zone history strain-increment-xz position (682,0,446)
+zone history strain-increment-zz position (682,0,446)
+
+zone history strain-increment quantity shear-maximum position (682,0,446)
+
+zone history displacement-x position (682,0,446)
+zone history displacement-z position (682,0,446)
+;6(678,0,435)
+zone history stress-xz position (678,0,435)
+zone history stress-xx position (678,0,435)
+zone history stress-zz position (678,0,435)
+
+zone history stress quantity shear-maximum position (678,0,435)
+
+zone history strain-increment-xx position (678,0,435)
+zone history strain-increment-xz position (678,0,435)
+zone history strain-increment-zz position (678,0,435)
+
+zone history strain-increment quantity shear-maximum position (678,0,435)
+
+zone history displacement-x position (678,0,435)
+zone history displacement-z position (678,0,435)
+;7(667,0,421)
+zone history stress-xz position (667,0,421)
+zone history stress-xx position (667,0,421)
+zone history stress-zz position (667,0,421)
+
+zone history stress quantity shear-maximum position (667,0,421)
+zone history strain-increment-xx position (667,0,421)
+zone history strain-increment-xz position (667,0,421)
+zone history strain-increment-zz position (667,0,421)
+
+zone history strain-increment quantity shear-maximum position (667,0,421)
+
+zone history displacement-x position (667,0,421)
+zone history displacement-z position (667,0,421)
+;8(659,0,410)
+zone history stress-xz position (659,0,410)
+zone history stress-xx position (659,0,410)
+zone history stress-zz position (659,0,410)
+
+zone history stress quantity shear-maximum position (659,0,410)
+
+zone history strain-increment-xx position (659,0,410)
+zone history strain-increment-xz position (659,0,410)
+zone history strain-increment-zz position (659,0,410)
+
+zone history strain-increment quantity shear-maximum position (659,0,410)
+
+zone history displacement-x position (659,0,410)
+zone history displacement-z position (659,0,410)
+;9(670,0,400)
+zone history stress-xz position (670,0,400)
+zone history stress-xx position (670,0,400)
+zone history stress-zz position (670,0,400)
+
+zone history stress quantity shear-maximum position (670,0,400)
+
+zone history strain-increment-xx position (670,0,400)
+zone history strain-increment-xz position (670,0,400)
+zone history strain-increment-zz position (670,0,400)
+
+zone history strain-increment quantity shear-maximum position (670,0,400)
+
+zone history displacement-x position (670,0,400)
+zone history displacement-z position (670,0,400)
+
+;10(656,0,395)
+zone history stress-xz position (656,0,395)
+zone history stress-xx position (656,0,395)
+zone history stress-zz position (656,0,395)
+
+zone history stress quantity shear-maximum position (656,0,395)
+zone history strain-increment-xx position (656,0,395)
+zone history strain-increment-xz position (656,0,395)
+zone history strain-increment-zz position (656,0,395)
+
+zone history strain-increment quantity shear-maximum position (656,0,395)
+
+zone history displacement-x position (656,0,395)
+zone history displacement-z position (656,0,395)
+;11(646,0,385)
+zone history stress-xz position (646,0,385)
+zone history stress-xx position (646,0,385)
+zone history stress-zz position (646,0,385)
+
+zone history stress quantity shear-maximum position (646,0,385)
+
+zone history strain-increment-xx position (646,0,385)
+zone history strain-increment-xz position (646,0,385)
+zone history strain-increment-zz position (646,0,385)
+
+zone history strain-increment quantity shear-maximum position (646,0,385)
+
+zone history displacement-x position (646,0,385)
+zone history displacement-z position (646,0,385)
+;12(643,0,373)
+zone history stress-xz position (643,0,373)
+zone history stress-xx position (643,0,373)
+zone history stress-zz position (643,0,373)
+
+zone history stress quantity shear-maximum position (643,0,373)
+
+zone history strain-increment-xx position (643,0,373)
+zone history strain-increment-xz position (643,0,373)
+zone history strain-increment-zz position (643,0,373)
+
+zone history strain-increment quantity shear-maximum position (643,0,373)
+
+zone history displacement-x position (643,0,373)
+zone history displacement-z position (643,0,373)
+;13(637,0,361)
+zone history stress-xz position (637,0,361)
+zone history stress-xx position (637,0,361)
+zone history stress-zz position (637,0,361)
+
+zone history stress quantity shear-maximum position (637,0,361)
+
+zone history strain-increment-xx position (637,0,361)
+zone history strain-increment-xz position (637,0,361)
+zone history strain-increment-zz position (637,0,361)
+
+zone history strain-increment quantity shear-maximum position (637,0,361)
+
+zone history displacement-x position (637,0,361)
+zone history displacement-z position (637,0,361)
+;14(629,0,354)
+zone history stress-xz position (629,0,354)
+zone history stress-xx position (629,0,354)
+zone history stress-zz position (629,0,354)
+
+zone history stress quantity shear-maximum position (629,0,354)
+
+zone history strain-increment-xx position (629,0,354)
+zone history strain-increment-xz position (629,0,354)
+zone history strain-increment-zz position (629,0,354)
+
+zone history strain-increment quantity shear-maximum position (629,0,354)
+
+zone history displacement-x position (629,0,354)
+zone history displacement-z position (629,0,354)
+;15(612,0,384)
+zone history stress-xz position (612,0,384)
+zone history stress-xx position (612,0,384)
+zone history stress-zz position (612,0,384)
+zone history stress quantity shear-maximum position (612,0,384)
+
+zone history strain-increment-xx position (612,0,384)
+zone history strain-increment-xz position (612,0,384)
+zone history strain-increment-zz position (612,0,384)
+
+zone history strain-increment quantity shear-maximum position (612,0,384)
+
+zone history displacement-x position (612,0,384)
+zone history displacement-z position (612,0,384)
+;16(607,0,342)
+zone history stress-xz position (607,0,342)
+zone history stress-xx position (607,0,342)
+zone history stress-zz position (607,0,342)
+
+zone history stress quantity shear-maximum position (607,0,342)
+
+zone history strain-increment-xx position (607,0,342)
+zone history strain-increment-xz position (607,0,342)
+zone history strain-increment-zz position (607,0,342)
+
+zone history strain-increment quantity shear-maximum position (607,0,342)
+
+zone history displacement-x position (607,0,342)
+zone history displacement-z position (607,0,342)
+;17(587,0,341)
+zone history stress-xz position (587,0,341)
+zone history stress-xx position (587,0,341)
+zone history stress-zz position (587,0,341)
+
+zone history stress quantity shear-maximum position (587,0,341)
+
+zone history strain-increment-xx position (587,0,341)
+zone history strain-increment-xz position (587,0,341)
+zone history strain-increment-zz position (587,0,341)
+
+zone history strain-increment quantity shear-maximum position (587,0,341)
+
+zone history displacement-x position (587,0,341)
+zone history displacement-z position (587,0,341)
+;18(582,0,326)
+zone history stress-xz position (582,0,326)
+zone history stress-xx position (582,0,326)
+zone history stress-zz position (582,0,326)
+
+zone history stress quantity shear-maximum position (582,0,326)
+
+zone history strain-increment-xx position (582,0,326)
+zone history strain-increment-xz position (582,0,326)
+zone history strain-increment-zz position (582,0,326)
+
+zone history strain-increment quantity shear-maximum position (582,0,326)
+
+zone history displacement-x position (582,0,326)
+zone history displacement-z position (582,0,326)
+;19(571,0,382)
+zone history stress-xz position (571,0,382)
+zone history stress-xx position (571,0,382)
+zone history stress-zz position (571,0,382)
+
+zone history stress quantity shear-maximum position (571,0,382)
+
+zone history strain-increment-xx position (571,0,382)
+zone history strain-increment-xz position (571,0,382)
+zone history strain-increment-zz position (571,0,382)
+
+zone history strain-increment quantity shear-maximum position (571,0,382)
+
+zone history displacement-x position (571,0,382)
+zone history displacement-z position (571,0,382)
+;20(559,0,295)
+zone history stress-xz position (559,0,295)
+zone history stress-xx position (559,0,295)
+zone history stress-zz position (559,0,295)
+
+zone history stress quantity shear-maximum position (559,0,295)
+
+zone history strain-increment-xx position (559,0,295)
+zone history strain-increment-xz position (559,0,295)
+zone history strain-increment-zz position (559,0,295)
+
+zone history strain-increment quantity shear-maximum position (559,0,295)
+
+zone history displacement-x position (559,0,295)
+zone history displacement-z position (559,0,295)
+;21(541,0,280)
+zone history stress-xz position (541,0,280)
+zone history stress-xx position (541,0,280)
+zone history stress-zz position (541,0,280)
+
+zone history stress quantity shear-maximum position (541,0,280)
+
+zone history strain-increment-xx position (541,0,280)
+zone history strain-increment-xz position (541,0,280)
+zone history strain-increment-zz position (541,0,280)
+
+zone history strain-increment quantity shear-maximum position (541,0,280)
+
+zone history displacement-x position (541,0,280)
+zone history displacement-z position (541,0,280)
+;22(520,0,269)
+zone history stress-xz position (520,0,269)
+zone history stress-xx position (520,0,269)
+zone history stress-zz position (520,0,269)
+
+zone history stress quantity shear-maximum position (520,0,269)
+
+zone history strain-increment-xx position (520,0,269)
+zone history strain-increment-xz position (520,0,269)
+zone history strain-increment-zz position (520,0,269)
+
+zone history strain-increment quantity shear-maximum position (520,0,269)
+
+zone history displacement-x position (520,0,269)
+zone history displacement-z position (520,0,269)
+;23(501,0,262)
+zone history stress-xz position (501,0,262)
+zone history stress-xx position (501,0,262)
+zone history stress-zz position (501,0,262)
+
+zone history stress quantity shear-maximum position (501,0,262)
+
+zone history strain-increment-xx position (501,0,262)
+zone history strain-increment-xz position (501,0,262)
+zone history strain-increment-zz position (501,0,262)
+
+zone history strain-increment quantity shear-maximum position (501,0,262)
+
+zone history displacement-x position (501,0,262)
+zone history displacement-z position (501,0,262)
+;24(482,0,247)
+zone history stress-xz position (482,0,247)
+zone history stress-xx position (482,0,247)
+zone history stress-zz position (482,0,247)
+
+zone history stress quantity shear-maximum position (482,0,247)
+
+zone history strain-increment-xx position (482,0,247)
+zone history strain-increment-xz position (482,0,247)
+zone history strain-increment-zz position (482,0,247)
+
+zone history strain-increment quantity shear-maximum position (482,0,247)
+
+zone history displacement-x position (482,0,247)
+zone history displacement-z position (482,0,247)
+;25(467,0,240)
+zone history stress-xz position (467,0,240)
+zone history stress-xx position (467,0,240)
+zone history stress-zz position (467,0,240)
+
+zone history stress quantity shear-maximum position (467,0,240)
+
+zone history strain-increment-xx position (467,0,240)
+zone history strain-increment-xz position (467,0,240)
+zone history strain-increment-zz position (467,0,240)
+
+zone history strain-increment quantity shear-maximum position (467,0,240)
+
+zone history displacement-x position (467,0,240)
+zone history displacement-z position (467,0,240)
+;26(438,0,245)
+zone history stress-xz position (438,0,245)
+zone history stress-xx position (438,0,245)
+zone history stress-zz position (438,0,245)
+
+zone history stress quantity shear-maximum position (438,0,245)
+
+zone history strain-increment-xx position (438,0,245)
+zone history strain-increment-xz position (438,0,245)
+zone history strain-increment-zz position (438,0,245)
+
+zone history strain-increment quantity shear-maximum position (438,0,245)
+
+zone history displacement-x position (438,0,245)
+zone history displacement-z position (438,0,245)
+;27(410,0,238)
+zone history stress-xz position (410,0,238)
+zone history stress-xx position (410,0,238)
+zone history stress-zz position (410,0,238)
+
+zone history stress quantity shear-maximum position (410,0,238)
+
+zone history strain-increment-xx position (410,0,238)
+zone history strain-increment-xz position (410,0,238)
+zone history strain-increment-zz position (410,0,238)
+
+zone history strain-increment quantity shear-maximum position (410,0,238)
+
+zone history displacement-x position (410,0,238)
+zone history displacement-z position (410,0,238)
+;28(373,0,228)
+zone history stress-xz position (373,0,228)
+zone history stress-xx position (373,0,228)
+zone history stress-zz position (373,0,228)
+
+zone history stress quantity shear-maximum position (373,0,228)
+
+zone history strain-increment-xx position (373,0,228)
+zone history strain-increment-xz position (373,0,228)
+zone history strain-increment-zz position (373,0,228)
+
+zone history strain-increment quantity shear-maximum position (373,0,228)
+
+zone history displacement-x position (373,0,228)
+zone history displacement-z position (373,0,228)
+;29(348,0,222)
+zone history stress-xz position (348,0,222)
+zone history stress-xx position (348,0,222)
+zone history stress-zz position (348,0,222)
+
+zone history stress quantity shear-maximum position (348,0,222)
+
+zone history strain-increment-xx position (348,0,222)
+zone history strain-increment-xz position (348,0,222)
+zone history strain-increment-zz position (348,0,222)
+
+zone history strain-increment quantity shear-maximum position (348,0,222)
+
+zone history displacement-x position (348,0,222)
+zone history displacement-z position (348,0,222)
+;30(312,0,218)
+zone history stress-xz position (312,0,218)
+zone history stress-xx position (312,0,218)
+zone history stress-zz position (312,0,218)
+
+zone history stress quantity shear-maximum position (312,0,218)
+
+zone history strain-increment-xx position (312,0,218)
+zone history strain-increment-xz position (312,0,218)
+zone history strain-increment-zz position (312,0,218)
+
+zone history strain-increment quantity shear-maximum position (312,0,218)
+
+zone history displacement-x position (312,0,218)
+zone history displacement-z position (312,0,218)
+;31(401,0,384)
+zone history stress-xz position (401,0,384)
+zone history stress-xx position (401,0,384)
+zone history stress-zz position (401,0,384)
+
+zone history stress quantity shear-maximum position (401,0,384)
+
+zone history strain-increment-xx position (401,0,384)
+zone history strain-increment-xz position (401,0,384)
+zone history strain-increment-zz position (401,0,384)
+
+zone history strain-increment quantity shear-maximum position (401,0,384)
+
+zone history displacement-x position (401,0,384)
+zone history displacement-z position (401,0,384)
+;32(395,0,351)
+zone history stress-xz position (395,0,351)
+zone history stress-xx position (395,0,351)
+zone history stress-zz position (395,0,351)
+
+zone history stress quantity shear-maximum position (395,0,351)
+
+zone history strain-increment-xx position (395,0,351)
+zone history strain-increment-xz position (395,0,351)
+zone history strain-increment-zz position (395,0,351)
+
+zone history strain-increment quantity shear-maximum position (395,0,351)
+
+zone history displacement-x position (395,0,351)
+zone history displacement-z position (395,0,351)
+;33(523,0,381)
+zone history stress-xz position (523,0,381)
+zone history stress-xx position (523,0,381)
+zone history stress-zz position (523,0,381)
+
+zone history stress quantity shear-maximum position (523,0,381)
+
+zone history strain-increment-xx position (523,0,381)
+zone history strain-increment-xz position (523,0,381)
+zone history strain-increment-zz position (523,0,381)
+
+zone history strain-increment quantity shear-maximum position (523,0,381)
+
+zone history displacement-x position (523,0,381)
+zone history displacement-z position (523,0,381)
+;34(514,0,341)
+zone history stress-xz position (514,0,341)
+zone history stress-xx position (514,0,341)
+zone history stress-zz position (514,0,341)
+
+zone history stress quantity shear-maximum position (514,0,341)
+
+zone history strain-increment-xx position (514,0,341)
+zone history strain-increment-xz position (514,0,341)
+zone history strain-increment-zz position (514,0,341)
+
+zone history strain-increment quantity shear-maximum position (514,0,341)
+
+zone history displacement-x position (514,0,341)
+zone history displacement-z position (514,0,341)
+;35(648,0,375)
+zone history stress-xz position (648,0,375)
+zone history stress-xx position (648,0,375)
+zone history stress-zz position (648,0,375)
+
+zone history stress quantity shear-maximum position (648,0,375)
+
+zone history strain-increment-xx position (648,0,375)
+zone history strain-increment-xz position (648,0,375)
+zone history strain-increment-zz position (648,0,375)
+
+zone history strain-increment quantity shear-maximum position (648,0,375)
+
+zone history displacement-x position (648,0,375)
+zone history displacement-z position (648,0,375)
+;36(637,0,341)
+zone history stress-xz position (637,0,341)
+zone history stress-xx position (637,0,341)
+zone history stress-zz position (637,0,341)
+
+zone history stress quantity shear-maximum position (637,0,341)
+
+zone history strain-increment-xx position (637,0,341)
+zone history strain-increment-xz position (637,0,341)
+zone history strain-increment-zz position (637,0,341)
+
+zone history strain-increment quantity shear-maximum position (637,0,341)
+
+zone history displacement-x position (637,0,341)
+zone history displacement-z position (637,0,341)
+;37(767,0,370)
+zone history stress-xz position (767,0,370)
+zone history stress-xx position (767,0,370)
+zone history stress-zz position (767,0,370)
+
+zone history stress quantity shear-maximum position (767,0,370)
+
+zone history strain-increment-xx position (767,0,370)
+zone history strain-increment-xz position (767,0,370)
+zone history strain-increment-zz position (767,0,370)
+
+zone history strain-increment quantity shear-maximum position (767,0,370)
+
+zone history displacement-x position (767,0,370)
+zone history displacement-z position (767,0,370)
+;38(762,0,339)
+zone history stress-xz position (762,0,339)
+zone history stress-xx position (762,0,339)
+zone history stress-zz position (762,0,339)
+
+zone history stress quantity shear-maximum position (762,0,339)
+
+zone history strain-increment-xx position (762,0,339)
+zone history strain-increment-xz position (762,0,339)
+zone history strain-increment-zz position (762,0,339)
+
+zone history strain-increment quantity shear-maximum position (762,0,339)
+
+zone history displacement-x position (762,0,339)
+zone history displacement-z position (762,0,339)
+;39(924,0,359)
+zone history stress-xz position (924,0,359)
+zone history stress-xx position (924,0,359)
+zone history stress-zz position (924,0,359)
+
+zone history stress quantity shear-maximum position (924,0,359)
+
+zone history strain-increment-xx position (924,0,359)
+zone history strain-increment-xz position (924,0,359)
+zone history strain-increment-zz position (924,0,359)
+
+zone history strain-increment quantity shear-maximum position (924,0,359)
+
+zone history displacement-x position (924,0,359)
+zone history displacement-z position (924,0,359)
+;40(923,0,326)
+zone history stress-xz position (923,0,326)
+zone history stress-xx position (923,0,326)
+zone history stress-zz position (923,0,326)
+
+zone history stress quantity shear-maximum position (923,0,326)
+
+zone history strain-increment-xx position (923,0,326)
+zone history strain-increment-xz position (923,0,326)
+zone history strain-increment-zz position (923,0,326)
+
+zone history strain-increment quantity shear-maximum position (923,0,326)
+
+zone history displacement-x position (923,0,326)
+zone history displacement-z position (923,0,326)
+;41(400,0,370)
+zone history stress-xz position (400,0,370)
+zone history stress-xx position (400,0,370)
+zone history stress-zz position (400,0,370)
+
+zone history stress quantity shear-maximum position (400,0,370)
+
+zone history strain-increment-xx position (400,0,370)
+zone history strain-increment-xz position (400,0,370)
+zone history strain-increment-zz position (400,0,370)
+
+zone history strain-increment quantity shear-maximum position (400,0,370)
+
+zone history displacement-x position (400,0,370)
+zone history displacement-z position (400,0,370)
+;42(524,0,366)
+zone history stress-xz position (524,0,366)
+zone history stress-xx position (524,0,366)
+zone history stress-zz position (524,0,366)
+
+zone history stress quantity shear-maximum position (524,0,366)
+
+zone history strain-increment-xx position (524,0,366)
+zone history strain-increment-xz position (524,0,366)
+zone history strain-increment-zz position (524,0,366)
+
+zone history strain-increment quantity shear-maximum position (524,0,366)
+
+zone history displacement-x position (524,0,366)
+zone history displacement-z position (524,0,366)
+;43(654,0,361)
+zone history stress-xz position (654,0,361)
+zone history stress-xx position (654,0,361)
+zone history stress-zz position (654,0,361)
+
+zone history stress quantity shear-maximum position (654,0,361)
+
+zone history strain-increment-xx position (654,0,361)
+zone history strain-increment-xz position (654,0,361)
+zone history strain-increment-zz position (654,0,361)
+
+zone history strain-increment quantity shear-maximum position (654,0,361)
+
+zone history displacement-x position (654,0,361)
+zone history displacement-z position (654,0,361)
+;44(788,0,351)
+zone history stress-xz position (788,0,351)
+zone history stress-xx position (788,0,351)
+zone history stress-zz position (788,0,351)
+
+zone history stress quantity shear-maximum position (788,0,351)
+
+zone history strain-increment-xx position (788,0,351)
+zone history strain-increment-xz position (788,0,351)
+zone history strain-increment-zz position (788,0,351)
+
+zone history strain-increment quantity shear-maximum position (788,0,351)
+
+zone history displacement-x position (788,0,351)
+zone history displacement-z position (788,0,351)
+;45(925,0,343)
+zone history stress-xz position (925,0,343)
+zone history stress-xx position (925,0,343)
+zone history stress-zz position (925,0,343)
+
+zone history stress quantity shear-maximum position (925,0,343)
+
+zone history strain-increment-xx position (925,0,343)
+zone history strain-increment-xz position (925,0,343)
+zone history strain-increment-zz position (925,0,343)
+
+zone history strain-increment quantity shear-maximum position (925,0,343)
+
+zone history displacement-x position (925,0,343)
+zone history displacement-z position (925,0,343)
+;46(281,0,210)
+zone history stress-xz position (281,0,210)
+zone history stress-xx position (281,0,210)
+zone history stress-zz position (281,0,210)
+
+zone history stress quantity shear-maximum position (281,0,210)
+
+zone history strain-increment-xx position (281,0,210)
+zone history strain-increment-xz position (281,0,210)
+zone history strain-increment-zz position (281,0,210)
+
+zone history strain-increment quantity shear-maximum position (281,0,210)
+
+zone history displacement-x position (281,0,210)
+zone history displacement-z position (281,0,210)
+;9_1(665,0,400)
+zone history stress-xz position (665,0,400)
+zone history stress-xx position (665,0,400)
+zone history stress-zz position (665,0,400)
+
+zone history stress quantity shear-maximum position (665,0,400)
+
+zone history strain-increment-xx position (665,0,400)
+zone history strain-increment-xz position (665,0,400)
+zone history strain-increment-zz position (665,0,400)
+
+zone history strain-increment quantity shear-maximum position (665,0,400)
+
+zone history displacement-x position (665,0,400)
+zone history displacement-z position (665,0,400)
+
+
+fish define save_every
+  loop local i (1,400)
+    filename = string(i) + "_cycle.f3sav"
+       command
+         model cycle 50
+         model save @filename
+       endcommand
+    endloop
+end
+@save_every
+
+model cycle 50
+model save '50_cycle.f3sav'
+
+model cycle 50
+model save '100_cycle.f3sav'
+
+model cycle 50
+model save '150_cycle.f3sav'
+
+model cycle 50
+model save '200_cycle.f3sav'
+
+model cycle 50
+model save '250_cycle.f3sav'
+
+model cycle 50
+model save '300_cycle.f3sav'
+
+model cycle 50
+model save '350_cycle.f3sav'
+model cycle 50
+model save '400_cycle.f3sav'
+
+model cycle 50
+model save '450_cycle.f3sav'
+
+model cycle 50
+model save '500_cycle.f3sav'
+
+model cycle 50
+model save '550_cycle.f3sav'
+
+model cycle 50
+model save '600_cycle.f3sav'
+
+model cycle 50
+model save '650_cycle.f3sav'
+
+model cycle 50
+model save '700_cycle.f3sav'
+
+model cycle 50
+model save '750_cycle.f3sav'
+
+model cycle 50
+model save '800_cycle.f3sav'
+
+model cycle 50
+model save '850_cycle.f3sav'
+
+model cycle 50
+model save '900_cycle.f3sav'
+model cycle 50
+model save '950_cycle.f3sav'
+
+model cycle 50
+model save '1000_cycle.f3sav'
+
+model cycle 50
+model save '1050_cycle.f3sav'
+
+model cycle 50
+model save '1100_cycle.f3sav'
+model cycle 50
+model save '1150_cycle.f3sav'
+
+model cycle 50
+model save '1200_cycle.f3sav'
+
+model cycle 50
+model save '1250_cycle.f3sav'
+
+model cycle 50
+model save '1300_cycle.f3sav'
+
+model cycle 50
+model save '1350_cycle.f3sav'
+model cycle 50
+model save '1400_cycle.f3sav'
+
+model cycle 50
+model save '1450_cycle.f3sav'
+model cycle 50
+model save '1500_cycle.f3sav'
+
+model cycle 50
+model save '1550_cycle.f3sav'
+model cycle 50
+model save '1600_cycle.f3sav'
+
+model cycle 50
+model save '1650_cycle.f3sav'
+model cycle 50
+model save '1700_cycle.f3sav'
+
+model cycle 50
+model save '1750_cycle.f3sav'
+
+model cycle 50
+model save '1800_cycle.f3sav'
+model cycle 50
+model save '1850_cycle.f3sav'
+
+model cycle 50
+model save '1900_cycle.f3sav'
+
+model cycle 50
+model save '1950_cycle.f3sav'
+
+model cycle 50
+model save '2000_cycle.f3sav'
+
+model cycle 50
+model save '2050_cycle.f3sav'
+
+model cycle 50
+model save '2100_cycle.f3sav'
+
+model cycle 50
+model save '2150_cycle.f3sav'
+
+model cycle 50
+model save '2200_cycle.f3sav'
+
+model cycle 50
+model save '2250_cycle.f3sav'
+
+model cycle 50
+model save '2300_cycle.f3sav'
+model cycle 50
+model save '2350_cycle.f3sav'
+
+model cycle 50
+model save '2400_cycle.f3sav'
+
+model cycle 50
+model save '2450_cycle.f3sav'
+
+model cycle 50
+model save '2500_cycle.f3sav'
+
+model cycle 50
+model save '2550_cycle.f3sav'
+
+model cycle 50
+model save '2600_cycle.f3sav'
+
+model cycle 50
+model save '2650_cycle.f3sav'
+
+model cycle 50
+model save '2700_cycle.f3sav'
+model cycle 50
+model save '2750_cycle.f3sav'
+
+model cycle 50
+model save '2800_cycle.f3sav'
+
+model cycle 50
+model save '2850_cycle.f3sav'
+
+model cycle 50
+model save '2900_cycle.f3sav'
+
+model cycle 50
+model save '2950_cycle.f3sav'
+
+model cycle 50
+model save '3000_cycle.f3sav'
+model cycle 50
+model save '3050_cycle.f3sav'
+
+model cycle 50
+model save '3100_cycle.f3sav'
+model cycle 50
+model save '3150_cycle.f3sav'
+
+model cycle 50
+model save '3200_cycle.f3sav'
+model cycle 50
+model save '3250_cycle.f3sav'
+
+model cycle 50
+model save '3300_cycle.f3sav'
+
+model cycle 50
+model save '3350_cycle.f3sav'
+
+model cycle 50
+model save '3400_cycle.f3sav'
+
+model cycle 50
+model save '3450_cycle.f3sav'
+model cycle 50
+model save '3500_cycle.f3sav'
+
+model cycle 50
+model save '3550_cycle.f3sav'
+model cycle 50
+model save '3600_cycle.f3sav'
+
+model cycle 50
+model save '3650_cycle.f3sav'
+model cycle 50
+model save '3700_cycle.f3sav'
+
+model cycle 50
+model save '3750_cycle.f3sav'
+
+model cycle 50
+model save '3800_cycle.f3sav'
+
+model cycle 50
+model save '3850_cycle.f3sav'
+
+model cycle 50
+model save '3900_cycle.f3sav'
+
+model cycle 50
+model save '3950_cycle.f3sav'
+
+model cycle 50
+model save '4000_cycle.f3sav'
+model cycle 50
+model save '4050_cycle.f3sav'
+
+model cycle 50
+model save '4100_cycle.f3sav'
+model cycle 50
+model save '4150_cycle.f3sav'
+
+model cycle 50
+model save '4200_cycle.f3sav'
+model cycle 50
+model save '4250_cycle.f3sav'
+
+model cycle 50
+model save '4300_cycle.f3sav'
+
+model cycle 50
+model save '4350_cycle.f3sav'
+
+model cycle 50
+model save '4400_cycle.f3sav'
+
+model cycle 50
+model save '4450_cycle.f3sav'
+model cycle 50
+model save '4500_cycle.f3sav'
+
+model cycle 50
+model save '4550_cycle.f3sav'
+
+model cycle 50
+model save '4600_cycle.f3sav'
+
+model cycle 50
+model save '4650_cycle.f3sav'
+
+model cycle 50
+model save '4700_cycle.f3sav'
+
+model cycle 50
+model save '4750_cycle.f3sav'
+
+model cycle 50
+model save '4800_cycle.f3sav'
+model cycle 50
+model save '4850_cycle.f3sav'
+
+model cycle 50
+model save '4900_cycle.f3sav'
+
+model cycle 50
+model save '4950_cycle.f3sav'
+
+model cycle 50
+model save '5000_cycle.f3sav'
+model cycle 50
+model save '5050_cycle.f3sav'
+
+model cycle 50
+model save '5100_cycle.f3sav'
+model cycle 50
+model save '5150_cycle.f3sav'
+
+model cycle 50
+model save '5200_cycle.f3sav'
+model cycle 50
+model save '5250_cycle.f3sav'
+
+model cycle 50
+model save '5300_cycle.f3sav'
+model cycle 50
+model save '5350_cycle.f3sav'
+
+model cycle 50
+model save '5400_cycle.f3sav'
+model cycle 50
+model save '5450_cycle.f3sav'
+
+model cycle 50
+model save '5500_cycle.f3sav'
+
+model cycle 50
+model save '5550_cycle.f3sav'
+
+model cycle 50
+model save '5600_cycle.f3sav'
+model cycle 50
+model save '5650_cycle.f3sav'
+
+model cycle 50
+model save '5700_cycle.f3sav'
+model cycle 50
+model save '5750_cycle.f3sav'
+
+model cycle 50
+model save '5800_cycle.f3sav'
+
+model cycle 50
+model save '5850_cycle.f3sav'
+
+model cycle 50
+model save '5900_cycle.f3sav'
+
+model cycle 50
+model save '5950_cycle.f3sav'
+
+model cycle 50
+model save '6000_cycle.f3sav'
+
+model cycle 50
+model save '6050_cycle.f3sav'
+
+model cycle 50
+model save '6100_cycle.f3sav'
+
+model cycle 50
+model save '6150_cycle.f3sav'
+
+model cycle 50
+model save '6200_cycle.f3sav'
+
+model cycle 50
+model save '6250_cycle.f3sav'
+
+model cycle 50
+model save '6300_cycle.f3sav'
+
+model cycle 50
+model save '6350_cycle.f3sav'
+
+model cycle 50
+model save '6400_cycle.f3sav'
+model cycle 50
+model save '6450_cycle.f3sav'
+model cycle 50
+model save '6500_cycle.f3sav'
+
+model cycle 50
+model save '6550_cycle.f3sav'
+
+model cycle 50
+model save '6600_cycle.f3sav'
+
+model cycle 50
+model save '6650_cycle.f3sav'
+
+model cycle 50
+model save '6700_cycle.f3sav'
+model cycle 50
+model save '6750_cycle.f3sav'
+
+model cycle 50
+model save '6800_cycle.f3sav'
+model cycle 50
+model save '6850_cycle.f3sav'
+model cycle 50
+model save '6900_cycle.f3sav'
+model cycle 50
+model save '6950_cycle.f3sav'
+model cycle 50
+model save '7000_cycle.f3sav'
+model cycle 50
+model save '7050_cycle.f3sav'
+model cycle 50
+model save '7100_cycle.f3sav'
+model cycle 50
+model save '7150_cycle.f3sav'
+model cycle 50
+model save '7200_cycle.f3sav'
+model cycle 50
+model save '7250_cycle.f3sav'
+model cycle 50
+model save '7300_cycle.f3sav'
+model cycle 50
+model save '7350_cycle.f3sav'
+model cycle 50
+model save '7400_cycle.f3sav'
+model cycle 50
+model save '7450_cycle.f3sav'
+model cycle 50
+model save '7500_cycle.f3sav'
+model cycle 50
+model save '7550_cycle.f3sav'
+model cycle 50
+model save '7600_cycle.f3sav'
+model cycle 50
+model save '7650_cycle.f3sav'
+model cycle 50
+model save '7700_cycle.f3sav'
+model cycle 50
+model save '7750_cycle.f3sav'
+model cycle 50
+model save '7800_cycle.f3sav'
+model cycle 50
+model save '7850_cycle.f3sav'
+model cycle 50
+model save '7900_cycle.f3sav'
+model cycle 50
+model save '7950_cycle.f3sav'
+model cycle 50
+model save '8000_cycle.f3sav'
+model cycle 50
+model save '8050_cycle.f3sav'
+model cycle 50
+model save '8100_cycle.f3sav'
+model cycle 50
+model save '8150_cycle.f3sav'
+model cycle 50
+model save '8200_cycle.f3sav'
+model cycle 50
+model save '8250_cycle.f3sav'
+model cycle 50
+model save '8300_cycle.f3sav'
+model cycle 50
+model save '8350_cycle.f3sav'
+model cycle 50
+model save '8400_cycle.f3sav'
+model cycle 50
+model save '8450_cycle.f3sav'
+model cycle 50
+model save '8500_cycle.f3sav'
+model cycle 50
+model save '8550_cycle.f3sav'
+model cycle 50
+model save '8600_cycle.f3sav'
+model cycle 50
+model save '8650_cycle.f3sav'
+model cycle 50
+model save '8700_cycle.f3sav'
+model cycle 50
+model save '8750_cycle.f3sav'
+model cycle 50
+model save '8800_cycle.f3sav'
+model cycle 50
+model save '8850_cycle.f3sav'
+model cycle 50
+model save '8900_cycle.f3sav'
+model cycle 50
+model save '8950_cycle.f3sav'
+model cycle 50
+model save '9000_cycle.f3sav'
+model cycle 50
+model save '9050_cycle.f3sav'
+model cycle 50
+model save '9100_cycle.f3sav'
+model cycle 50
+model save '9150_cycle.f3sav'
+model cycle 50
+model save '9200_cycle.f3sav'
+model cycle 50
+model save '9250_cycle.f3sav'
+model cycle 50
+model save '9300_cycle.f3sav'
+model cycle 50
+model save '9350_cycle.f3sav'
+model cycle 50
+model save '9400_cycle.f3sav'
+model cycle 50
+model save '9450_cycle.f3sav'
+model cycle 50
+model save '9500_cycle.f3sav'
+model cycle 50
+model save '9550_cycle.f3sav'
+model cycle 50
+model save '9600_cycle.f3sav'
+model cycle 50
+model save '9650_cycle.f3sav'
+model cycle 50
+model save '9700_cycle.f3sav'
+model cycle 50
+model save '9750_cycle.f3sav'
+model cycle 50
+model save '9800_cycle.f3sav'
+model cycle 50
+model save '9850_cycle.f3sav'
+model cycle 50
+model save '9900_cycle.f3sav'
+model cycle 50
+model save '9950_cycle.f3sav'
+model cycle 50
+model save '10000_cycle.f3sav'
+model cycle 50
+model save '10050_cycle.f3sav'
+model cycle 50
+model save '10100_cycle.f3sav'
+model cycle 50
+model save '10150_cycle.f3sav'
+model cycle 50
+model save '10200_cycle.f3sav'
+model cycle 50
+model save '10250_cycle.f3sav'
+model cycle 50
+model save '10300_cycle.f3sav'
+model cycle 50
+model save '10350_cycle.f3sav'
+model cycle 50
+model save '10400_cycle.f3sav'
+model cycle 50
+model save '10450_cycle.f3sav'
+model cycle 50
+model save '10500_cycle.f3sav'
+model cycle 50
+model save '10550_cycle.f3sav'
+model cycle 50
+model save '10600_cycle.f3sav'
+model cycle 50
+model save '10650_cycle.f3sav'
+model cycle 50
+model save '10700_cycle.f3sav'
+model cycle 50
+model save '10750_cycle.f3sav'
+model cycle 50
+model save '10800_cycle.f3sav'
+model cycle 50
+model save '10850_cycle.f3sav'
+model cycle 50
+model save '10900_cycle.f3sav'
+model cycle 50
+model save '10950_cycle.f3sav'
+model cycle 50
+model save '11000_cycle.f3sav'
+model cycle 50
+model save '11050_cycle.f3sav'
+model cycle 50
+model save '11100_cycle.f3sav'
+model cycle 50
+model save '11150_cycle.f3sav'
+model cycle 50
+model save '11200_cycle.f3sav'
+model cycle 50
+model save '11250_cycle.f3sav'
+model cycle 50
+model save '11300_cycle.f3sav'
+model cycle 50
+model save '11350_cycle.f3sav'
+model cycle 50
+model save '11400_cycle.f3sav'
+model cycle 50
+model save '11450_cycle.f3sav'
+model cycle 50
+model save '11500_cycle.f3sav'
+model cycle 50
+model save '11550_cycle.f3sav'
+model cycle 50
+model save '11600_cycle.f3sav'
+model cycle 50
+model save '11650_cycle.f3sav'
+model cycle 50
+model save '11700_cycle.f3sav'
+model cycle 50
+model save '11750_cycle.f3sav'
+model cycle 50
+model save '11800_cycle.f3sav'
+model cycle 50
+model save '11850_cycle.f3sav'
+model cycle 50
+model save '11900_cycle.f3sav'
+model cycle 50
+model save '11950_cycle.f3sav'
+model cycle 50
+model save '12000_cycle.f3sav'
+model cycle 50
+model save '12050_cycle.f3sav'
+model cycle 50
+model save '12100_cycle.f3sav'
+model cycle 50
+model save '12150_cycle.f3sav'
+model cycle 50
+model save '12200_cycle.f3sav'
+model cycle 50
+model save '12250_cycle.f3sav'
+model cycle 50
+model save '12300_cycle.f3sav'
+model cycle 50
+model save '12350_cycle.f3sav'
+model cycle 50
+model save '12400_cycle.f3sav'
+model cycle 50
+model save '12450_cycle.f3sav'
+model cycle 50
+model save '12500_cycle.f3sav'
+model cycle 50
+model save '12550_cycle.f3sav'
+model cycle 50
+model save '12600_cycle.f3sav'
+model cycle 50
+model save '12650_cycle.f3sav'
+model cycle 50
+model save '12700_cycle.f3sav'
+model cycle 50
+model save '12750_cycle.f3sav'
+model cycle 50
+model save '12800_cycle.f3sav'
+model cycle 50
+model save '12850_cycle.f3sav'
+model cycle 50
+model save '12900_cycle.f3sav'
+model cycle 50
+model save '12950_cycle.f3sav'
+model cycle 50
+model save '13000_cycle.f3sav'
+model cycle 50
+model save '13050_cycle.f3sav'
+model cycle 50
+model save '13100_cycle.f3sav'
+model cycle 50
+model save '13150_cycle.f3sav'
+model cycle 50
+model save '13200_cycle.f3sav'
+model cycle 50
+model save '13250_cycle.f3sav'
+model cycle 50
+model save '13300_cycle.f3sav'
+model cycle 50
+model save '13350_cycle.f3sav'
+model cycle 50
+model save '13400_cycle.f3sav'
+model cycle 50
+model save '13450_cycle.f3sav'
+model cycle 50
+model save '13500_cycle.f3sav'
+model cycle 50
+model save '13550_cycle.f3sav'
+model cycle 50
+model save '13600_cycle.f3sav'
+model cycle 50
+model save '13650_cycle.f3sav'
+model cycle 50
+model save '13700_cycle.f3sav'
+model cycle 50
+model save '13750_cycle.f3sav'
+model cycle 50
+model save '13800_cycle.f3sav'
+model cycle 50
+model save '13850_cycle.f3sav'
+model cycle 50
+model save '13900_cycle.f3sav'
+model cycle 50
+model save '13950_cycle.f3sav'
+model cycle 50
+model save '14000_cycle.f3sav'
+model cycle 50
+model save '14050_cycle.f3sav'
+model cycle 50
+model save '14100_cycle.f3sav'
+model cycle 50
+model save '14150_cycle.f3sav'
+model cycle 50
+model save '14200_cycle.f3sav'
+model cycle 50
+model save '14250_cycle.f3sav'
+model cycle 50
+model save '14300_cycle.f3sav'
+model cycle 50
+model save '14350_cycle.f3sav'
+model cycle 50
+model save '14400_cycle.f3sav'
+model cycle 50
+model save '14450_cycle.f3sav'
+model cycle 50
+model save '14500_cycle.f3sav'
+model cycle 50
+model save '14550_cycle.f3sav'
+model cycle 50
+model save '14600_cycle.f3sav'
+model cycle 50
+model save '14650_cycle.f3sav'
+model cycle 50
+model save '14700_cycle.f3sav'
+model cycle 50
+model save '14750_cycle.f3sav'
+model cycle 50
+model save '14800_cycle.f3sav'
+model cycle 50
+model save '14850_cycle.f3sav'
+model cycle 50
+model save '14900_cycle.f3sav'
+model cycle 50
+model save '14950_cycle.f3sav'
+model cycle 50
+model save '15000_cycle.f3sav'
+model cycle 50
+model save '15050_cycle.f3sav'
+model cycle 50
+model save '15100_cycle.f3sav'
+model cycle 50
+model save '15150_cycle.f3sav'
+model cycle 50
+model save '15200_cycle.f3sav'
+model cycle 50
+model save '15250_cycle.f3sav'
+model cycle 50
+model save '15300_cycle.f3sav'
+model cycle 50
+model save '15350_cycle.f3sav'
+model cycle 50
+model save '15400_cycle.f3sav'
+model cycle 50
+model save '15450_cycle.f3sav'
+model cycle 50
+model save '15500_cycle.f3sav'
+model cycle 50
+model save '15550_cycle.f3sav'
+model cycle 50
+model save '15600_cycle.f3sav'
+model cycle 50
+model save '15650_cycle.f3sav'
+model cycle 50
+model save '15700_cycle.f3sav'
+model cycle 50
+model save '15750_cycle.f3sav'
+model cycle 50
+model save '15800_cycle.f3sav'
+model cycle 50
+model save '15850_cycle.f3sav'
+model cycle 50
+model save '15900_cycle.f3sav'
+model cycle 50
+model save '15950_cycle.f3sav'
+model cycle 50
+model save '16000_cycle.f3sav'
+model cycle 50
+model save '16050_cycle.f3sav'
+model cycle 50
+model save '16100_cycle.f3sav'
+model cycle 50
+model save '16150_cycle.f3sav'
+model cycle 50
+model save '16200_cycle.f3sav'
+model cycle 50
+model save '16250_cycle.f3sav'
+model cycle 50
+model save '16300_cycle.f3sav'
+model cycle 50
+model save '16350_cycle.f3sav'
+model cycle 50
+model save '16400_cycle.f3sav'
+model cycle 50
+model save '16450_cycle.f3sav'
+model cycle 50
+model save '16500_cycle.f3sav'
+model cycle 50
+model save '16550_cycle.f3sav'
+model cycle 50
+model save '16600_cycle.f3sav'
+model cycle 50
+model save '16650_cycle.f3sav'
+model cycle 50
+model save '16700_cycle.f3sav'
+model cycle 50
+model save '16750_cycle.f3sav'
+model cycle 50
+model save '16800_cycle.f3sav'
+model cycle 50
+model save '16850_cycle.f3sav'
+model cycle 50
+model save '16900_cycle.f3sav'
+model cycle 50
+model save '16950_cycle.f3sav'
+model cycle 50
+model save '17000_cycle.f3sav'
+model cycle 50
+model save '17050_cycle.f3sav'
+model cycle 50
+model save '17100_cycle.f3sav'
+model cycle 50
+model save '17150_cycle.f3sav'
+model cycle 50
+model save '17200_cycle.f3sav'
+model cycle 50
+model save '17250_cycle.f3sav'
+model cycle 50
+model save '17300_cycle.f3sav'
+model cycle 50
+model save '17350_cycle.f3sav'
+model cycle 50
+model save '17400_cycle.f3sav'
+model cycle 50
+model save '17450_cycle.f3sav'
+model cycle 50
+model save '17500_cycle.f3sav'
+model cycle 50
+model save '17550_cycle.f3sav'
+model cycle 50
+model save '17600_cycle.f3sav'
+model cycle 50
+model save '17650_cycle.f3sav'
+model cycle 50
+model save '17700_cycle.f3sav'
+model cycle 50
+model save '17750_cycle.f3sav'
+model cycle 50
+model save '17800_cycle.f3sav'
+model cycle 50
+model save '17850_cycle.f3sav'
+model cycle 50
+model save '17900_cycle.f3sav'
+model cycle 50
+model save '17950_cycle.f3sav'
+model cycle 50
+model save '18000_cycle.f3sav'
+model cycle 50
+model save '18050_cycle.f3sav'
+model cycle 50
+model save '18100_cycle.f3sav'
+model cycle 50
+model save '18150_cycle.f3sav'
+model cycle 50
+model save '18200_cycle.f3sav'
+model cycle 50
+model save '18250_cycle.f3sav'
+model cycle 50
+model save '18300_cycle.f3sav'
+model cycle 50
+model save '18350_cycle.f3sav'
+model cycle 50
+model save '18400_cycle.f3sav'
+model cycle 50
+model save '18450_cycle.f3sav'
+model cycle 50
+model save '18500_cycle.f3sav'
+model cycle 50
+model save '18550_cycle.f3sav'
+model cycle 50
+model save '18600_cycle.f3sav'
+model cycle 50
+model save '18650_cycle.f3sav'
+model cycle 50
+model save '18700_cycle.f3sav'
+model cycle 50
+model save '18750_cycle.f3sav'
+model cycle 50
+model save '18800_cycle.f3sav'
+model cycle 50
+model save '18850_cycle.f3sav'
+model cycle 50
+model save '18900_cycle.f3sav'
+model cycle 50
+model save '18950_cycle.f3sav'
+model cycle 50
+model save '19000_cycle.f3sav'
+model cycle 50
+model save '19050_cycle.f3sav'
+model cycle 50
+model save '19100_cycle.f3sav'
+model cycle 50
+model save '19150_cycle.f3sav'
+model cycle 50
+model save '19200_cycle.f3sav'
+model cycle 50
+model save '19250_cycle.f3sav'
+model cycle 50
+model save '19300_cycle.f3sav'
+model cycle 50
+model save '19350_cycle.f3sav'
+model cycle 50
+model save '19400_cycle.f3sav'
+model cycle 50
+model save '19450_cycle.f3sav'
+model cycle 50
+model save '19500_cycle.f3sav'
+model cycle 50
+model save '19550_cycle.f3sav'
+model cycle 50
+model save '19600_cycle.f3sav'
+model cycle 50
+model save '19650_cycle.f3sav'
+model cycle 50
+model save '19700_cycle.f3sav'
+model cycle 50
+model save '19750_cycle.f3sav'
+model cycle 50
+model save '19800_cycle.f3sav'
+model cycle 50
+model save '19850_cycle.f3sav'
+model cycle 50
+model save '19900_cycle.f3sav'
+model cycle 50
+model save '19950_cycle.f3sav'
+model cycle 50
+model save '20000_cycle.f3sav'
